@@ -2,6 +2,7 @@ package com.example.projet.socketclient;
 
 
 import com.example.projet.models.User;
+import com.example.projet.models.listeners.SearchListener;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.List;
 
 public class Client implements Runnable {
     private static Client instance;
@@ -18,7 +20,11 @@ public class Client implements Runnable {
 
     private User currentUser;
 
+    private ObjectProperty<List<User>> searchedUsersProperty = new SimpleObjectProperty<>();
 
+    public ObjectProperty<List<User>> searchedUsersProperty() {
+        return searchedUsersProperty;
+    }
 
     public User getUser(){return currentUser;}
 
@@ -59,6 +65,11 @@ public class Client implements Runnable {
                 } else if (message instanceof User) {
                     currentUser = (User) message;
                     System.out.println(currentUser.getUserName());
+                }else if(message instanceof List<?>){
+                    List<?> list = (List<?>) message;
+                    if (((List<?>) message).get(0) instanceof User){
+                         searchedUsersProperty.set((List<User>) list );
+                    }
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
