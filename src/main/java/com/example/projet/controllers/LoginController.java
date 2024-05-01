@@ -1,6 +1,7 @@
 package com.example.projet.controllers;
 
 import com.example.projet.HelloApplication;
+import com.example.projet.Model;
 import com.example.projet.dto.CreateUser;
 import com.example.projet.socketclient.Client;
 import javafx.event.ActionEvent;
@@ -10,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -38,13 +40,9 @@ public class LoginController {
         createUser.setUsername(userName.getText());
         createUser.setGender(gender);
         Client.getInstance().sendMessage(createUser);
-        FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("MainView.fxml"));
+        Model.getInstance().getViewFactory().showMain();
 
-        VBox box = loader.load();
-        Scene scene = new Scene(box);
 
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
     }
 
 }
