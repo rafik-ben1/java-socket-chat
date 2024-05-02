@@ -23,10 +23,13 @@ public class SelectChatController {
 
     @FXML
     public void search(ActionEvent event){
+        //Sending request for searching users
         SearchUser searchUser = new SearchUser();
-        searchUser.setRequestedBy(Client.getInstance().getUser().getUserId());
+        searchUser.setClientId(Client.getInstance().getUser().getUserId());
         searchUser.setSearchingFor(searchField.getText());
         Client.getInstance().sendMessage(searchUser);
+
+        ///Switching scene to the search one
         Scene scene = Model.getInstance().getViewFactory().getStage().getScene();
         BorderPane pane = (BorderPane) scene.getRoot();
         pane.setLeft(Model.getInstance().getViewFactory().getSearch());

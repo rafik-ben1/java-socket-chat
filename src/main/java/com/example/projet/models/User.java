@@ -59,5 +59,8 @@ public class User implements Serializable {
         return avatar;
     }
 
-
+    @Override
+    public String toString(){
+        return userName;
+    }
 }

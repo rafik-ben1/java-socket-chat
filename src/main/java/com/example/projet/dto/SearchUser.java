@@ -9,16 +9,6 @@ public class SearchUser extends Message {
 
     private String searchingFor;
 
-    private int requestedBy;
-
-    public int getRequestedBy() {
-        return requestedBy;
-    }
-
-    public void setRequestedBy(int requestedBy) {
-        this.requestedBy = requestedBy;
-    }
-
     public String getSearchingFor() {
         return searchingFor;
     }

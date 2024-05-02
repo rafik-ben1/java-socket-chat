@@ -58,9 +58,10 @@ public class MessageHandler {
             }
         } );
         clients.forEach(client ->{
-            if (client.getUser().getUserId() == searchUser.getRequestedBy())
+            if (client.getUser().getUserId() == searchUser.getClientId())
                 client.sendMessage(search);
         } );
+        clients.forEach(client -> System.out.println("Search result " + client.getUser().getUserName() ) ) ;
     }
 
 

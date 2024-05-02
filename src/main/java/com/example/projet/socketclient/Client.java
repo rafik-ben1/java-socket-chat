@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Client implements Runnable {
@@ -67,6 +68,9 @@ public class Client implements Runnable {
                     System.out.println(currentUser.getUserName());
                 }else if(message instanceof List<?>){
                     List<?> list = (List<?>) message;
+                     if(list.isEmpty()){
+                         continue;
+                     }
                     if (((List<?>) message).get(0) instanceof User){
                          searchedUsersProperty.set((List<User>) list );
                     }

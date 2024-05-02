@@ -5,6 +5,8 @@ import com.example.projet.models.User;
 import com.example.projet.models.listeners.SearchListener;
 import com.example.projet.socketclient.Client;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -15,12 +17,15 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class SearchController implements Initializable {
 
      @FXML
      private ListView<User> users;
+
+    ObservableList<User> userObservableList;
     @FXML
     public void goBack(){
         Scene scene = Model.getInstance().getViewFactory().getStage().getScene();
@@ -31,8 +36,16 @@ public class SearchController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        userObservableList = FXCollections
+                .observableList(Client.getInstance().searchedUsersProperty().get());
+        users.setItems(userObservableList);
         Client.getInstance().searchedUsersProperty().addListener((observableValue, users1, t1) -> {
-            System.out.println(t1.get(0).getGender());
+            Platform.runLater(()->{
+                t1.forEach(u -> System.out.println(u.getUserName()));
+                 userObservableList =  FXCollections.observableList(t1);
+                users.setItems(userObservableList);
+            });
+
         });
     }
 }
