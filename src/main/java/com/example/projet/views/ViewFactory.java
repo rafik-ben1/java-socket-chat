@@ -17,7 +17,7 @@ public class ViewFactory {
 
 
     private AnchorPane login;
-    private FlowPane MyChats;
+    private VBox MyChats;
     private Stage stage;
 
     private VBox chat;
@@ -43,7 +43,7 @@ public class ViewFactory {
         return login;
     }
 
-    public FlowPane getMyChats() {
+    public VBox getMyChats() {
         if(MyChats == null){
             try {
                 MyChats = new FXMLLoader(HelloApplication.class.getResource("MyChats.fxml")).load();

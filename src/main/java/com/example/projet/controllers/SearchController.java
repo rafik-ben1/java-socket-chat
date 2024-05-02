@@ -1,10 +1,9 @@
 package com.example.projet.controllers;
 
 import com.example.projet.Model;
-import com.example.projet.dto.CreateChat;
+
 import com.example.projet.models.User;
-import com.example.projet.models.enums.ChatType;
-import com.example.projet.models.listeners.SearchListener;
+
 import com.example.projet.socketclient.Client;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -14,14 +13,15 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TextField;
+
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
+
 
 import java.net.URL;
+
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -41,8 +41,10 @@ public class SearchController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        userObservableList = FXCollections
-                .observableList(Client.getInstance().searchedUsersProperty().get());
+        if (Client.getInstance().searchedUsersProperty().get() == null){
+            userObservableList = FXCollections.observableList(List.of());
+        }else {userObservableList = FXCollections
+                .observableList(Client.getInstance().searchedUsersProperty().get());}
         users.setItems(userObservableList);
         users.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         users.getSelectionModel().selectedItemProperty().addListener(userSelectionListener);

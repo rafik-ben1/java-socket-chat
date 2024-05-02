@@ -1,8 +1,8 @@
 package com.example.projet.socketclient;
 
 
+import com.example.projet.models.Chat;
 import com.example.projet.models.User;
-import com.example.projet.models.listeners.SearchListener;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Client implements Runnable {
@@ -26,6 +25,8 @@ public class Client implements Runnable {
     public ObjectProperty<List<User>> searchedUsersProperty() {
         return searchedUsersProperty;
     }
+    private ObjectProperty<List<Chat>> myChatsProperty = new SimpleObjectProperty<>();
+    public ObjectProperty<List<Chat>> getMyChatsProperty(){return myChatsProperty;}
 
     public User getUser(){return currentUser;}
 
@@ -59,14 +60,25 @@ public class Client implements Runnable {
     public void run() {
         while (true){
             try {
+                //Reading the message object
+
                 Object message = in.readObject();
                 if(message instanceof Integer ){
+                    //Getting the current client id to insure communication between client and server
                     currentUser = new User((Integer) message);
                     System.out.println(currentUser.getUserId());
                 } else if (message instanceof User) {
+                    //Getting the current User
                     currentUser = (User) message;
                     System.out.println(currentUser.getUserName());
-                }else if(message instanceof List<?>){
+
+                } else if (message instanceof Chat) {
+                    //new chat added
+                    List<Chat> chatList = myChatsProperty.get();
+                    chatList.add((Chat) message);
+                    myChatsProperty.set(chatList);
+
+                } else if(message instanceof List<?>){
                     List<?> list = (List<?>) message;
                      if(list.isEmpty()){
                          continue;

@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projet.controllers.SelectChatController">
+
+<VBox fx:controller="com.example.projet.controllers.MyChatsController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="250.0" style="-fx-border-color: #229ED7;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TextField fx:id="searchField" alignment="TOP_LEFT" onAction="#search" prefHeight="29.0" prefWidth="94.0" promptText="Search.." translateX="160.0">
-         <FlowPane.margin>
-            <Insets />
-         </FlowPane.margin>
-      </TextField>
+      <HBox prefHeight="42.0" prefWidth="250.0" style="-fx-background-color: #229ED2;">
+         <children>
+            <Label fx:id="avatar" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 50%;" text="R" textAlignment="RIGHT">
+               <font>
+                  <Font name="System Bold" size="25.0" />
+               </font>
+            </Label>
+            <TextField fx:id="searchField" alignment="TOP_LEFT" maxWidth="-Infinity" onAction="#search" prefHeight="42.0" prefWidth="110.0" promptText="Search.." translateX="100.0" />
+         </children>
+      </HBox>
+      <ListView fx:id="chatsListView" prefHeight="354.0" prefWidth="248.0" />
    </children>
-</FlowPane>
+</VBox>
