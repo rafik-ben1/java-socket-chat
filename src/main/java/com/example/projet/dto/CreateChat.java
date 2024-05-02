@@ -10,6 +10,16 @@ public class CreateChat extends Message {
 
     private int createdBy;
 
+    @Override
+    public String toString() {
+        return "CreateChat{" +
+                "chatName='" + chatName + '\'' +
+                ", createdBy=" + createdBy +
+                ", participant=" + participant +
+                ", chatType=" + chatType +
+                '}';
+    }
+
     private int participant;
 
     public String getChatName() {

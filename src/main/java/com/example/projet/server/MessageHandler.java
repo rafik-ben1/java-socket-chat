@@ -6,6 +6,7 @@ import com.example.projet.dto.SearchUser;
 import com.example.projet.models.Chat;
 import com.example.projet.models.ChatMessage;
 import com.example.projet.models.User;
+import com.example.projet.socketclient.Client;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +68,7 @@ public class MessageHandler {
 
     public void createChat(CreateChat createChat){
         Chat newChat = new Chat(nextChatId);
+        newChat.setChatName(createChat.getChatName());
         increamentNextChatId();
         clients.forEach(client ->{
             int id = client.getUser().getUserId();
@@ -76,6 +78,7 @@ public class MessageHandler {
         });
         newChat.setType(createChat.getChatType());
         chats.add(newChat);
+        System.out.println("created" + newChat.getChatName());
 
     }
     public void sendChatMessage(ChatMessage chatMessage){

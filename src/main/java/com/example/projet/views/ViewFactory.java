@@ -20,8 +20,9 @@ public class ViewFactory {
     private FlowPane MyChats;
     private Stage stage;
 
-
+    private VBox chat;
     private VBox search;
+    private VBox userProfile;
 
     public ViewFactory(){
     }
@@ -61,6 +62,26 @@ public class ViewFactory {
             }
         }
         return search;
+    }
+    public VBox getChat() {
+        if(chat == null){
+            try {
+                search = new FXMLLoader(HelloApplication.class.getResource("Chat.fxml")).load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return chat;
+    }
+    public VBox getUserProfile() {
+        if(userProfile == null){
+            try {
+                userProfile = new FXMLLoader(HelloApplication.class.getResource("UserProfile.fxml")).load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return userProfile;
     }
     public void init(){
         stage = new Stage();
