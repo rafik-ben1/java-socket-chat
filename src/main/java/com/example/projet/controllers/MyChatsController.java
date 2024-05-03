@@ -46,6 +46,9 @@ public class MyChatsController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Platform.runLater(()->{
             avatar.setText(Client.getInstance().getUser().getUserName().toUpperCase().substring(0,1));
+            avatar.setStyle("-fx-background-color: "+Client.getInstance().getUser().getAvatarColor()+";"+
+                    "-fx-background-radius: 50%; " +
+                    "-fx-text-fill: white;");
         } );
     }
 }

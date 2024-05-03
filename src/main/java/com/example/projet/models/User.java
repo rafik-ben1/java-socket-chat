@@ -1,5 +1,7 @@
 package com.example.projet.models;
 
+import javafx.scene.paint.Color;
+
 import java.io.Serializable;
 
 
@@ -22,12 +24,15 @@ public class User implements Serializable {
 
     private String gender;
 
+    private String avatarColor;
 
+    public String getAvatarColor() {
+        return avatarColor;
+    }
 
-
-
-
-
+    public void setAvatarColor(String avatarColor) {
+        this.avatarColor = avatarColor;
+    }
     public int getUserId() {
         return userId;
     }
@@ -43,7 +48,7 @@ public class User implements Serializable {
 
 
     public String getUserName() {
-        return userName;
+        return this.userName;
     }
 
     public void setUserName(String userName) {

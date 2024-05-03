@@ -7,19 +7,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox fx:controller="com.example.projet.controllers.MyChatsController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="250.0" style="-fx-border-color: #229ED7;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="504.0" prefWidth="300.0" style="-fx-border-color: #229ED7;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projet.controllers.MyChatsController">
    <children>
-      <HBox prefHeight="42.0" prefWidth="250.0" style="-fx-background-color: #229ED2;">
+      <HBox prefHeight="42.0" prefWidth="250.0" style="-fx-background-color: #f6f6f6;">
          <children>
-            <Label fx:id="avatar" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 50%;" text="R" textAlignment="RIGHT">
+            <Label fx:id="avatar" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: lightblue; -fx-background-radius: 50%;" text="R" textAlignment="RIGHT">
                <font>
                   <Font name="System Bold" size="25.0" />
                </font>
             </Label>
-            <TextField fx:id="searchField" alignment="TOP_LEFT" maxWidth="-Infinity" onAction="#search" prefHeight="42.0" prefWidth="110.0" promptText="Search.." translateX="100.0" />
+            <TextField fx:id="searchField" alignment="TOP_LEFT" maxWidth="-Infinity" onAction="#search" prefHeight="42.0" prefWidth="158.0" promptText="Search.." translateX="100.0" />
          </children>
       </HBox>
-      <ListView fx:id="chatsListView" prefHeight="354.0" prefWidth="248.0" />
+      <ListView fx:id="chatsListView" prefHeight="462.0" prefWidth="298.0" />
    </children>
 </VBox>

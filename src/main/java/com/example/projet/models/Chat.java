@@ -3,22 +3,28 @@ package com.example.projet.models;
 import com.example.projet.models.enums.ChatType;
 import com.example.projet.server.MessagingSession;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Chat {
+public class Chat  {
     private int chatId;
     private String chatName;
 
     private ChatType type;
-    private List<MessagingSession> participants;
+    private List<User> participants;
     public Chat(int chatId){
 
         this.chatId = chatId;
         participants = new ArrayList<>();
     }
-    public void sendMessageToParticipants(ChatMessage message){
-        participants.forEach(participant -> participant.sendMessage(message) );
+//    public void sendMessageToParticipants(Message message){
+//        participants.forEach(participant -> participant.sendMessage(message) );
+//    }
+
+
+    public List<User> getParticipants() {
+        return participants;
     }
 
     public ChatType getType() {
@@ -29,8 +35,8 @@ public class Chat {
         this.type = type;
     }
 
-    public void addParticipant(MessagingSession messagingSession){
-        participants.add(messagingSession);
+    public void addParticipant(User user){
+        participants.add(user);
     }
 
 

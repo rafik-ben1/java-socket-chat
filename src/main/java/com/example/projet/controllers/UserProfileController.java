@@ -21,6 +21,8 @@ public class UserProfileController implements Initializable {
     @FXML
     public Label gender;
     @FXML
+    public Label avatar;
+    @FXML
     public void addUser(ActionEvent event) {
         User user = Client.getInstance().getUser();
         User userToAdd = Model.getInstance().selectedProfileProperty().get();
@@ -35,9 +37,19 @@ public class UserProfileController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         username.setText(Model.getInstance().selectedProfileProperty().get().getUserName());
         gender.setText(Model.getInstance().selectedProfileProperty().get().getGender());
+        avatar.setText(Model.getInstance().selectedProfileProperty().get().getUserName().toUpperCase().substring(0,1));
+        avatar.setStyle(" -fx-background-radius: 50%;"
+        + "-fx-background-color: "+Client.getInstance().getUser().getAvatarColor()+";"+
+                "-fx-text-fill: white;"
+        );
         Model.getInstance().selectedProfileProperty().addListener((observableValue, user, t1) -> {
             username.setText(t1.getUserName());
             gender.setText(t1.getGender());
+            avatar.setText(Model.getInstance().selectedProfileProperty().get().getUserName().toUpperCase().substring(0,1));
+            avatar.setStyle(" -fx-background-radius: 50%;"
+                            + "-fx-background-color: "+Client.getInstance().getUser().getAvatarColor()+";"+
+                    "-fx-text-fill: white;"
+            );
         });
     }
 }

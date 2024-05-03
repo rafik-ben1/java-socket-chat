@@ -46,6 +46,7 @@ public class MessageHandler {
         User user = session.getUser();
         user.setUserName(createUser.getUsername());
         user.setGender(createUser.getGender());
+        user.setAvatarColor(createUser.getAvatarColor());
         session.setUser(user);
         System.out.println(user.getUserName());
         session.sendMessage(user);
@@ -54,7 +55,7 @@ public class MessageHandler {
     public void searchUser(SearchUser searchUser){
         List<User> search = new ArrayList<>();
         clients.forEach(client -> {
-            if(client.getUser().getUserName().startsWith(searchUser.getSearchingFor())){
+            if(client.getUser().getUserName().toLowerCase().startsWith(searchUser.getSearchingFor().toLowerCase())){
                 search.add(client.getUser());
             }
         } );
@@ -69,24 +70,33 @@ public class MessageHandler {
     public void createChat(CreateChat createChat){
         Chat newChat = new Chat(nextChatId);
         newChat.setChatName(createChat.getChatName());
+        newChat.setType(createChat.getChatType());
         increamentNextChatId();
         clients.forEach(client ->{
             int id = client.getUser().getUserId();
             if(id == createChat.getParticipant() || id ==  createChat.getClientId()){
-                newChat.addParticipant(client);
+                newChat.addParticipant(client.getUser());
             }
         });
-        newChat.setType(createChat.getChatType());
+        clients.forEach(client ->{
+            int id = client.getUser().getUserId();
+            if (id == createChat.getParticipant() || id == createChat.getClientId()){
+                client.sendMessage(newChat);
+            }
+        });
         chats.add(newChat);
         System.out.println("created" + newChat.getChatName());
 
     }
     public void sendChatMessage(ChatMessage chatMessage){
         chats.forEach(chat -> {
-            if (chat.getChatId() == chatMessage.getChatId()){
-                chat.sendMessageToParticipants(chatMessage);
-            }
 
+            List<MessagingSession> clientToSendMessage = null;
+            if (chat.getChatId() == chatMessage.getChatId()) {
+                clientToSendMessage = clients
+                        .stream().filter(client -> chat.getParticipants().contains(client.getUser())).toList();
+            }
+            clientToSendMessage.forEach(client -> client.sendMessage(chatMessage));
         });
     }
 

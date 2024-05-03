@@ -16,10 +16,10 @@ import java.net.Socket;
 
 public class MessagingSession implements Runnable {
 
-    private Socket socket;
-    private ObjectOutputStream out;
+    private transient Socket socket;
+    private transient ObjectOutputStream out;
 
-    private ObjectInputStream in;
+    private transient ObjectInputStream in;
 
     private User user;
 

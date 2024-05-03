@@ -1,23 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projet.controllers.LoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="504.0" prefWidth="720.0" style="-fx-background-color: #229ED1;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projet.controllers.LoginController">
     <children>
-        <Label layoutX="197.0" layoutY="90.0" text="Username" />
-        <TextField fx:id="userName" layoutX="197.0" layoutY="118.0" prefHeight="24.0" prefWidth="205.0" />
-        <Label layoutX="197.0" layoutY="158.0" text="Gender" />
-        <Button layoutX="192.0" layoutY="234.0" mnemonicParsing="false" onAction="#login" prefHeight="30.0" prefWidth="205.0" text="Submit" />
-          <RadioButton fx:id="male" layoutX="209.0" layoutY="191.0" mnemonicParsing="false" onAction="#setGender" text="Male">
+        <Label layoutX="247.0" layoutY="83.0" text="Username" textFill="#f6f6f6">
+         <font>
+            <Font name="Ubuntu Bold" size="14.0" />
+         </font></Label>
+        <TextField fx:id="userName" layoutX="251.0" layoutY="110.0" prefHeight="34.0" prefWidth="205.0" />
+        <Label layoutX="251.0" layoutY="161.0" text="Gender" textFill="#f6f6f6">
+         <font>
+            <Font name="Ubuntu Bold" size="14.0" />
+         </font></Label>
+        <Button layoutX="251.0" layoutY="356.0" mnemonicParsing="false" onAction="#login" prefHeight="40.0" prefWidth="219.0" style="-fx-background-color: #f6f6f6;" text="Submit" textFill="#229ed9">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Button>
+          <RadioButton fx:id="male" layoutX="251.0" layoutY="193.0" mnemonicParsing="false" onAction="#setGender" text="Male" textFill="#f6f6f6">
          <toggleGroup>
             <ToggleGroup fx:id="gender" />
          </toggleGroup>
+         <font>
+            <Font size="14.0" />
+         </font>
       </RadioButton>
-          <RadioButton fx:id="female" layoutX="300.0" layoutY="191.0" mnemonicParsing="false" onAction="#setGender" text="Female" toggleGroup="$gender" />
+          <RadioButton fx:id="female" layoutX="373.0" layoutY="193.0" mnemonicParsing="false" onAction="#setGender" text="Female" textFill="#f6f6f6" toggleGroup="$gender">
+         <font>
+            <Font size="14.0" />
+         </font></RadioButton>
+      <ColorPicker fx:id="avatatColor" layoutX="255.0" layoutY="286.0" prefHeight="34.0" prefWidth="211.0" />
+      <Label layoutX="251.0" layoutY="244.0" text="Avatar Color" textFill="#f6f6f6">
+         <font>
+            <Font name="Ubuntu Bold" size="14.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>
