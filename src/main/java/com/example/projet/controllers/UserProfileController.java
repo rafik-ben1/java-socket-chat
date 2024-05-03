@@ -47,7 +47,7 @@ public class UserProfileController implements Initializable {
             gender.setText(t1.getGender());
             avatar.setText(Model.getInstance().selectedProfileProperty().get().getUserName().toUpperCase().substring(0,1));
             avatar.setStyle(" -fx-background-radius: 50%;"
-                            + "-fx-background-color: "+Client.getInstance().getUser().getAvatarColor()+";"+
+                            + "-fx-background-color: "+Model.getInstance().selectedProfileProperty().get().getAvatarColor()+";"+
                     "-fx-text-fill: white;"
             );
         });

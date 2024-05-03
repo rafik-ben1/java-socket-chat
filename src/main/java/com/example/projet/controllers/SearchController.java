@@ -5,6 +5,7 @@ import com.example.projet.Model;
 import com.example.projet.models.User;
 
 import com.example.projet.socketclient.Client;
+import com.example.projet.views.UserListCell;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -14,10 +15,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 
 import javafx.scene.layout.BorderPane;
+import javafx.util.Callback;
 
 
 import java.net.URL;
@@ -41,12 +44,19 @@ public class SearchController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        users.setStyle("-fx-selection-bar: #229ED1;");
         if (Client.getInstance().searchedUsersProperty().get() == null){
             userObservableList = FXCollections.observableList(List.of());
         }else {userObservableList = FXCollections
                 .observableList(Client.getInstance().searchedUsersProperty().get());}
         users.setItems(userObservableList);
         users.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        users.setCellFactory(new Callback<ListView<User>, ListCell<User>>() {
+            @Override
+            public ListCell<User> call(ListView<User> listView) {
+                return new UserListCell();
+            }
+        });
         users.getSelectionModel().selectedItemProperty().addListener(userSelectionListener);
         Client.getInstance().searchedUsersProperty().addListener((observableValue, users1, t1) -> {
             Platform.runLater(()->{
