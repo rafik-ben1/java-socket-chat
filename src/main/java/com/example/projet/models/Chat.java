@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Chat  {
+public class Chat implements Serializable {
     private int chatId;
     private String chatName;
 
@@ -22,6 +22,10 @@ public class Chat  {
 //        participants.forEach(participant -> participant.sendMessage(message) );
 //    }
 
+
+    public void setParticipants(List<User> participants) {
+        this.participants = participants;
+    }
 
     public List<User> getParticipants() {
         return participants;
@@ -56,4 +60,8 @@ public class Chat  {
         return chatName;
     }
 
+    @Override
+    public String toString() {
+        return chatName;
+    }
 }

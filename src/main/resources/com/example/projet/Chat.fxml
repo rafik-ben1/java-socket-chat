@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:controller="com.example.projet.controllers.CurrentChatController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ListView fx:id="messageListView" prefHeight="353.0" prefWidth="350.0" style="-fx-background-color: #f6f6f6;" />
       <TextField fx:id="messageField" onAction="#sendMessage" prefHeight="46.0" prefWidth="350.0" promptText="Write your message here" />

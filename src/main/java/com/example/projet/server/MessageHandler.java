@@ -9,14 +9,15 @@ import com.example.projet.models.User;
 import com.example.projet.socketclient.Client;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
 public class MessageHandler {
-    private static List<MessagingSession> clients = new ArrayList<>() ;
+    private static List<MessagingSession> clients = new ArrayList<>();
     private static List<Chat> chats = new ArrayList<>();
-    private static int nextUserId = 0;
-    private static int nextChatId = 0;
+    private static int nextUserId = 1;
+    private static int nextChatId = 1;
     private synchronized int getNextUserId(){
         return nextUserId;
     }
@@ -67,38 +68,40 @@ public class MessageHandler {
     }
 
 
-    public void createChat(CreateChat createChat){
+    public void createChat(CreateChat createChat) {
+        System.out.println("creating " + createChat);
         Chat newChat = new Chat(nextChatId);
         newChat.setChatName(createChat.getChatName());
         newChat.setType(createChat.getChatType());
         increamentNextChatId();
-        clients.forEach(client ->{
-            int id = client.getUser().getUserId();
-            if(id == createChat.getParticipant() || id ==  createChat.getClientId()){
-                newChat.addParticipant(client.getUser());
-            }
-        });
-        clients.forEach(client ->{
-            int id = client.getUser().getUserId();
-            if (id == createChat.getParticipant() || id == createChat.getClientId()){
-                client.sendMessage(newChat);
-            }
-        });
+        newChat.setParticipants(createChat.getParticipants());
         chats.add(newChat);
-        System.out.println("created" + newChat.getChatName());
+        // Send the chat only to the participants
+          List<MessagingSession> clientsToSend = clients
+                  .stream().filter(client -> newChat.getParticipants().contains(client.getUser()) ).toList();
 
-    }
-    public void sendChatMessage(ChatMessage chatMessage){
-        chats.forEach(chat -> {
+          clientsToSend.forEach(client ->{
+              System.out.println("sending to " + client.getUser());
+              client.sendMessage(newChat);
+          });
 
-            List<MessagingSession> clientToSendMessage = null;
-            if (chat.getChatId() == chatMessage.getChatId()) {
-                clientToSendMessage = clients
-                        .stream().filter(client -> chat.getParticipants().contains(client.getUser())).toList();
-            }
-            clientToSendMessage.forEach(client -> client.sendMessage(chatMessage));
-        });
+
     }
 
 
-}
+    }
+//    public void sendChatMessage(ChatMessage chatMessage){
+//
+//        chats.forEach(chat -> {
+//
+//            List<MessagingSession> clientToSendMessage = null;
+//            if (chat.getChatId() == chatMessage.getChatId()) {
+//                clientToSendMessage = clients
+//                        .stream().filter(client -> chat.getParticipants().contains(client.getUser())).toList();
+//            }
+//            clientToSendMessage.forEach(client -> client.sendMessage(chatMessage));
+//        });
+//    }
+
+
+

@@ -3,6 +3,7 @@ package com.example.projet.models;
 import javafx.scene.paint.Color;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 
 public class User implements Serializable {
@@ -62,6 +63,19 @@ public class User implements Serializable {
 
     public String getAvatar() {
         return avatar;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        User user = (User) object;
+        return userId == user.userId && Objects.equals(userName, user.userName) && Objects.equals(avatar, user.avatar) && Objects.equals(gender, user.gender) && Objects.equals(avatarColor, user.avatarColor);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, userName, avatar, gender, avatarColor);
     }
 
     @Override

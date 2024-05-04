@@ -65,12 +65,13 @@ public class MessagingSession implements Runnable {
             case CREATE_CHAT:
                 handler.createChat((CreateChat) message);
                 break;
-            case CHAT_MESSAGE:
-                handler.sendChatMessage((ChatMessage) message);
+
         }
 
     }
     public void sendMessage(Object object){
+        if (socket.isClosed())
+            return;
         try {
             out.writeObject(object);
             out.flush();
@@ -80,12 +81,17 @@ public class MessagingSession implements Runnable {
     }
     public void disconect(){
         try {
-            socket.close();
-            in.close();
-            out.close();
+            if (out != null) {
+                out.close();
+            }
+            if (in != null) {
+                in.close();
+            }
+            if (socket != null && !socket.isClosed()) {
+                socket.close();
+            }
         } catch (IOException e){
             e.printStackTrace();
         }
-
     }
 }

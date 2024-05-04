@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class UserProfileController implements Initializable {
@@ -27,8 +28,8 @@ public class UserProfileController implements Initializable {
         User user = Client.getInstance().getUser();
         User userToAdd = Model.getInstance().selectedProfileProperty().get();
         CreateChat createChat = new CreateChat(user.getUserName()+ "/"+userToAdd.getUserName(),
-                user.getUserId(), ChatType.PRIVATE);
-        System.out.println(createChat);
+                ChatType.PRIVATE);
+        createChat.setParticipant(List.of(user , userToAdd));
         Client.getInstance().sendMessage(createChat);
     }
 
@@ -39,7 +40,7 @@ public class UserProfileController implements Initializable {
         gender.setText(Model.getInstance().selectedProfileProperty().get().getGender());
         avatar.setText(Model.getInstance().selectedProfileProperty().get().getUserName().toUpperCase().substring(0,1));
         avatar.setStyle(" -fx-background-radius: 50%;"
-        + "-fx-background-color: "+Client.getInstance().getUser().getAvatarColor()+";"+
+        + "-fx-background-color: "+Model.getInstance().selectedProfileProperty().get().getAvatarColor()+";"+
                 "-fx-text-fill: white;"
         );
         Model.getInstance().selectedProfileProperty().addListener((observableValue, user, t1) -> {

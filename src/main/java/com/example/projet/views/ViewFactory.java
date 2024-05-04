@@ -1,6 +1,8 @@
 package com.example.projet.views;
 
 import com.example.projet.HelloApplication;
+import com.example.projet.controllers.MyChatsController;
+import com.example.projet.socketclient.Client;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXMLLoader;
@@ -43,6 +45,20 @@ public class ViewFactory {
         return login;
     }
 
+    public void showMyChats() {
+        FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("MyChats.fxml"));
+        VBox pane;
+        try {
+            pane = loader.load();
+            MyChatsController controller = loader.getController();
+            Client.getInstance().SetChatsListener(controller);
+            BorderPane root = (BorderPane) stage.getScene().getRoot();
+            root.setLeft(pane);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public VBox getMyChats() {
         if(MyChats == null){
             try {
@@ -66,7 +82,7 @@ public class ViewFactory {
     public VBox getChat() {
         if(chat == null){
             try {
-                search = new FXMLLoader(HelloApplication.class.getResource("Chat.fxml")).load();
+                chat = new FXMLLoader(HelloApplication.class.getResource("Chat.fxml")).load();
             } catch (IOException e) {
                 e.printStackTrace();
             }
