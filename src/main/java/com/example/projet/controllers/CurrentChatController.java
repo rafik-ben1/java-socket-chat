@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
 
 import java.net.URL;
@@ -52,7 +53,12 @@ public class CurrentChatController implements Initializable, MessageListener {
         });
         Model.getInstance().selectedChatProperty().addListener((observableValue, chat, t1) -> {
             Platform.runLater(()->{
-                 messages = FXCollections.observableArrayList(t1.getMessages());
+                if (t1 != null){
+                    messages = FXCollections.observableArrayList(t1.getMessages());
+                }else {
+                    messages.clear();
+                }
+
             });
         });
     }

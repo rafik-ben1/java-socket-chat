@@ -80,13 +80,12 @@ public class ViewFactory {
         return search;
     }
     public VBox getChat() {
-        if(chat == null){
+
             try {
                 chat = new FXMLLoader(HelloApplication.class.getResource("Chat.fxml")).load();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
         return chat;
     }
     public VBox getUserProfile() {
