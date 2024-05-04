@@ -4,6 +4,8 @@ package com.example.projet.socketclient;
 import com.example.projet.Model;
 import com.example.projet.controllers.MyChatsController;
 import com.example.projet.models.Chat;
+import com.example.projet.models.ChatMessage;
+import com.example.projet.models.MessageListener;
 import com.example.projet.models.User;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
@@ -15,6 +17,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,10 +37,10 @@ public class Client implements Runnable {
     private ObjectProperty<List<Chat>> myChatsProperty = new SimpleObjectProperty<>();
     public ObjectProperty<List<Chat>> getMyChatsProperty(){return myChatsProperty;}
 
-     private MyChatsController controller;
+     private List<MessageListener> controllers;
 
-    public void SetChatsListener(MyChatsController chatsController){
-        this.controller = chatsController;
+    public void addChatsListener(MessageListener chatsController){
+        controllers.add(chatsController);
     }
 
 
@@ -48,6 +51,7 @@ public class Client implements Runnable {
             socket = new Socket("localhost",5000);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
+            controllers = new ArrayList<>();
             myChatsProperty.set(new LinkedList<>());
         }catch (IOException e){
             e.printStackTrace();
@@ -90,13 +94,32 @@ public class Client implements Runnable {
                 } else if (message instanceof Chat) {
 
                     System.out.println((Chat) message);
-                       Platform.runLater(()->{
-                           List<Chat> chatList = myChatsProperty.get();
-                           chatList.addFirst((Chat) message);
-                           myChatsProperty.set(chatList);
-                           controller.listen(chatList);
-                       });
+                    Chat chat = (Chat) message;
 
+                    List<Chat> chatList = myChatsProperty.get();
+                    System.out.println("client class// chat messages" + chat.getMessages());
+
+                    chatList.addFirst(chat);
+                    myChatsProperty.set(chatList);
+                    Platform.runLater(() -> {
+                        controllers.forEach(controller -> {
+                            controller.listen(chatList);
+                        });
+                    });
+                }
+                else if(message instanceof ChatMessage){
+                    ChatMessage msg = (ChatMessage) message;
+                    List<Chat> chatList = myChatsProperty.get();
+                  Chat chat = chatList.stream().filter(c -> c.getChatId() == msg.getChatId() )
+                        .toList().get(0);
+                  chatList.remove(chat);
+                  chat.addMessage(msg);
+                  chatList.addFirst(chat);
+                  Platform.runLater(()->{
+                      controllers.forEach(controller -> {
+                          controller.listen(chatList);
+                      });
+                  });
 
                 } else if(message instanceof List<?>){
                     List<?> list = (List<?>) message;

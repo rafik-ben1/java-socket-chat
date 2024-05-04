@@ -23,5 +23,7 @@ public class ChatMessage extends Message {
         return content;
     }
 
+    @Override
+    public String toString(){return content;}
 
 }

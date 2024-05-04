@@ -65,7 +65,9 @@ public class MessagingSession implements Runnable {
             case CREATE_CHAT:
                 handler.createChat((CreateChat) message);
                 break;
-
+            case CHAT_MESSAGE:
+                handler.sendChatMessage((ChatMessage) message);
+                break;
         }
 
     }

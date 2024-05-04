@@ -56,7 +56,7 @@ public class MessageHandler {
     public void searchUser(SearchUser searchUser){
         List<User> search = new ArrayList<>();
         clients.forEach(client -> {
-            if(client.getUser().getUserName().toLowerCase().startsWith(searchUser.getSearchingFor().toLowerCase())){
+            if( client.getUser().getUserId() != searchUser.getClientId() && client.getUser().getUserName().toLowerCase().startsWith(searchUser.getSearchingFor().toLowerCase())){
                 search.add(client.getUser());
             }
         } );
@@ -77,31 +77,29 @@ public class MessageHandler {
         newChat.setParticipants(createChat.getParticipants());
         chats.add(newChat);
         // Send the chat only to the participants
+        broadCastChat(newChat,newChat);
+
+
+    }
+    public void sendChatMessage(ChatMessage chatMessage){
+        Chat chat = chats.stream()
+                .filter(c -> c.getChatId() == chatMessage.getChatId() ).toList().get(0);
+        chat.addMessage(chatMessage);
+         System.out.println("sending " +chatMessage);
+        broadCastChat(chat,chatMessage);
+    }
+
+      public void broadCastChat(Chat chat, Object send){
+        System.out.println("chat messages  " +chat.getMessages());
           List<MessagingSession> clientsToSend = clients
-                  .stream().filter(client -> newChat.getParticipants().contains(client.getUser()) ).toList();
+                  .stream().filter(client -> chat.getParticipants().contains(client.getUser()) ).toList();
 
           clientsToSend.forEach(client ->{
               System.out.println("sending to " + client.getUser());
-              client.sendMessage(newChat);
-          });
-
-
-    }
-
+              client.sendMessage(send);
+      });}
 
     }
-//    public void sendChatMessage(ChatMessage chatMessage){
-//
-//        chats.forEach(chat -> {
-//
-//            List<MessagingSession> clientToSendMessage = null;
-//            if (chat.getChatId() == chatMessage.getChatId()) {
-//                clientToSendMessage = clients
-//                        .stream().filter(client -> chat.getParticipants().contains(client.getUser())).toList();
-//            }
-//            clientToSendMessage.forEach(client -> client.sendMessage(chatMessage));
-//        });
-//    }
 
 
 

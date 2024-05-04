@@ -45,19 +45,19 @@ public class ViewFactory {
         return login;
     }
 
-    public void showMyChats() {
-        FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("MyChats.fxml"));
-        VBox pane;
-        try {
-            pane = loader.load();
-            MyChatsController controller = loader.getController();
-            Client.getInstance().SetChatsListener(controller);
-            BorderPane root = (BorderPane) stage.getScene().getRoot();
-            root.setLeft(pane);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void showMyChats() {
+//        FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("MyChats.fxml"));
+//        VBox pane;
+//        try {
+//            pane = loader.load();
+//            MyChatsController controller = loader.getController();
+//            Client.getInstance().SetChatsListener(controller);
+//            BorderPane root = (BorderPane) stage.getScene().getRoot();
+//            root.setLeft(pane);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public VBox getMyChats() {
         if(MyChats == null){

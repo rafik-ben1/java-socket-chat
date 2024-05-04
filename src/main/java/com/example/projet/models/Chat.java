@@ -5,6 +5,7 @@ import com.example.projet.server.MessagingSession;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Chat implements Serializable {
@@ -17,11 +18,17 @@ public class Chat implements Serializable {
 
         this.chatId = chatId;
         participants = new ArrayList<>();
+        messages = new ArrayList<>();
     }
-//    public void sendMessageToParticipants(Message message){
-//        participants.forEach(participant -> participant.sendMessage(message) );
-//    }
+    private List<ChatMessage> messages;
 
+    public void addMessage(ChatMessage chatMessage){
+        messages.add(chatMessage);
+    }
+
+    public List<ChatMessage> getMessages() {
+        return messages;
+    }
 
     public void setParticipants(List<User> participants) {
         this.participants = participants;

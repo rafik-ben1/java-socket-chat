@@ -3,6 +3,7 @@ package com.example.projet.controllers;
 import com.example.projet.Model;
 import com.example.projet.dto.SearchUser;
 import com.example.projet.models.Chat;
+import com.example.projet.models.MessageListener;
 import com.example.projet.models.User;
 import com.example.projet.socketclient.Client;
 import com.example.projet.views.ChatListCell;
@@ -23,7 +24,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class MyChatsController implements Initializable {
+public class MyChatsController implements Initializable, MessageListener {
     @FXML
     private TextField searchField;
 
@@ -50,13 +51,13 @@ public class MyChatsController implements Initializable {
 
 
       public void listen(List<Chat> chat){
-          System.out.println("listening " + chat);
+          System.out.println("listening " + chat + "  messages " + chat.get(0).getMessages());
          chatObservableList.setAll(chat);
        }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Client.getInstance().SetChatsListener(this);
+        Client.getInstance().addChatsListener(this);
         chatObservableList = FXCollections.observableArrayList(Client.getInstance().getMyChatsProperty().get());
         chatsListView.setItems(chatObservableList);
         chatsListView.setStyle("-fx-selection-bar: #229ED1;");
@@ -67,6 +68,7 @@ public class MyChatsController implements Initializable {
                 return new ChatListCell();
             }
         });
+        chatsListView.getSelectionModel().selectedItemProperty().addListener(chatSelectionListener);
             Platform.runLater(() -> {
                 // Set user avatar
                 avatar.setText(Client.getInstance().getUser().getUserName().toUpperCase().substring(0,1));
@@ -79,7 +81,7 @@ public class MyChatsController implements Initializable {
 
     }
 
-    private final ChangeListener<Chat> userSelectionListener = new ChangeListener<Chat>() {
+    private final ChangeListener<Chat> chatSelectionListener = new ChangeListener<Chat>() {
         @Override
         public void changed(ObservableValue<? extends Chat> observable, Chat oldValue, Chat newValue) {
             handleChatSelection(newValue);
