@@ -2,6 +2,7 @@ package com.example.projet.views;
 
 import com.example.projet.models.Chat;
 import com.example.projet.models.User;
+import com.example.projet.models.enums.ChatType;
 import com.example.projet.socketclient.Client;
 import javafx.geometry.Pos;
 import javafx.scene.control.ContentDisplay;
@@ -25,6 +26,7 @@ public class ChatListCell extends ListCell<Chat> {
         if (empty || chat == null) {
             setGraphic(null);
         } else {
+            if(chat.getChatType() == ChatType.PRIVATE){
             User user = chat.getParticipants().stream()
                     .filter(u -> u.getUserId() != Client.getInstance().getUser().getUserId() )
                             .toList().get(0);
@@ -35,11 +37,20 @@ public class ChatListCell extends ListCell<Chat> {
                     "-fx-text-fill: white;"+
                     "-fx-font-weight: bold;"
             );
+                avatarLabel.setPrefWidth(40);
+            }
+            if (chat.getChatType() == ChatType.GROUP){
+
+                avatarLabel.setText("GROUP ");
+                usernameLabel.setText(chat.getChatName());
+                avatarLabel.setStyle("-fx-font-weight: bold;");
+            }
+            avatarLabel.setPrefHeight(40);
+
             usernameLabel.setStyle("-fx-font-weight: bold;");
             usernameLabel.setAlignment(Pos.CENTER);
-            avatarLabel.setPrefHeight(40);
-            avatarLabel.setPrefWidth(40);
             avatarLabel.setAlignment(Pos.CENTER);
+
             HBox hbox = new HBox(avatarLabel, usernameLabel);
             setStyle("-fx-border-width: 0 0 1 0; -fx-border-color: lightgray;");
             hbox.setSpacing(15);

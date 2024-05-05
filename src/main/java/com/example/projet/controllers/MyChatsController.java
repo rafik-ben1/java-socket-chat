@@ -1,10 +1,13 @@
 package com.example.projet.controllers;
 
 import com.example.projet.Model;
+import com.example.projet.dto.AddToGroupChat;
+import com.example.projet.dto.CreateChat;
 import com.example.projet.dto.SearchUser;
 import com.example.projet.models.Chat;
 import com.example.projet.models.MessageListener;
 import com.example.projet.models.User;
+import com.example.projet.models.enums.ChatType;
 import com.example.projet.socketclient.Client;
 import com.example.projet.views.ChatListCell;
 import javafx.application.Platform;
@@ -22,6 +25,7 @@ import javafx.util.Callback;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MyChatsController implements Initializable, MessageListener {
@@ -48,11 +52,25 @@ public class MyChatsController implements Initializable, MessageListener {
         BorderPane pane = (BorderPane) scene.getRoot();
         pane.setLeft(Model.getInstance().getViewFactory().getSearch());
     }
+    @FXML
+    public void showPrompt(ActionEvent e){
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Create a new group chat");
+        dialog.setHeaderText("Enter group chat name");
+        dialog.setContentText("chat name: ");
+        Optional<String> chatName = dialog.showAndWait();
+        chatName.ifPresent(name ->{
+            CreateChat create = new CreateChat(name, ChatType.GROUP);
+            create.setClientId(Client.getInstance().getUser().getUserId());
+            Client.getInstance().sendMessage(create);
+        } );
+    }
 
 
       public void listen(List<Chat> chat){
-          System.out.println("listening " + chat + "  messages " + chat.get(0).getMessages());
-         chatObservableList.setAll(chat);
+            System.out.println("listening " + chat + "  messages " + chat.get(0).getMessages());
+            chatObservableList.setAll(chat);
+
        }
 
     @Override

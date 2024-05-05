@@ -2,6 +2,7 @@ package com.example.projet.server;
 
 
 
+import com.example.projet.dto.AddToGroupChat;
 import com.example.projet.dto.CreateChat;
 import com.example.projet.dto.CreateUser;
 import com.example.projet.dto.SearchUser;
@@ -68,6 +69,8 @@ public class MessagingSession implements Runnable {
             case CHAT_MESSAGE:
                 handler.sendChatMessage((ChatMessage) message);
                 break;
+            case ADD_TO_CHAT:
+                handler.addToChat((AddToGroupChat) message);
         }
 
     }

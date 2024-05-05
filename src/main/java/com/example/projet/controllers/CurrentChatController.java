@@ -64,18 +64,18 @@ public class CurrentChatController implements Initializable, MessageListener {
     }
 
     @Override
-    public void listen(List<Chat> chatlist) {
+    public void listen(List<Chat> chatList) {
         Platform.runLater(() -> {
-            Chat curr = chatlist.stream()
-                    .filter(chat -> chat.getChatId() == Model.getInstance().selectedChatProperty().get().getChatId())
-                    .findFirst()
-                    .orElse(null); // Handle the case where the chat with the given ID is not found
-            if (curr != null) {
-                List<ChatMessage> currMessages = curr.getMessages();
-                synchronized (messages) { // Synchronize access to the messages list
+            Chat selectedChat = Model.getInstance().selectedChatProperty().get();
+                Chat curr = chatList.stream()
+                        .filter(chat -> chat.getChatId() == selectedChat.getChatId())
+                        .findFirst()
+                        .orElse(null);
+                if (curr != null) {
+                    List<ChatMessage> currMessages = curr.getMessages();
                     messages.setAll(currMessages);
                 }
-            }
+
         });
     }
 }

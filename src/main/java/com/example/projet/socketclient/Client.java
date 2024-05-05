@@ -20,6 +20,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class Client implements Runnable {
     private static Client instance;
@@ -98,14 +99,23 @@ public class Client implements Runnable {
 
                     List<Chat> chatList = myChatsProperty.get();
                     System.out.println("client class// chat messages" + chat.getMessages());
+                    Optional<Chat> optionalChat = chatList.stream()
+                            .filter(c -> c.getChatId() == chat.getChatId())
+                            .findFirst();
 
-                    chatList.addFirst(chat);
-                    myChatsProperty.set(chatList);
+
+                    if (!optionalChat.isEmpty()){
+                        chatList.remove(optionalChat.get());
+                    }
+                        chatList.addFirst(chat);
+                        myChatsProperty.set(chatList);
                     Platform.runLater(() -> {
-                        controllers.forEach(controller -> {
-                            controller.listen(chatList);
-                        });
+                            controllers.forEach(controller -> {
+                                controller.listen(chatList);
+                            });
                     });
+
+
                 }
                 else if(message instanceof ChatMessage){
                     ChatMessage msg = (ChatMessage) message;

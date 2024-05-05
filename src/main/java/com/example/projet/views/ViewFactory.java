@@ -89,13 +89,12 @@ public class ViewFactory {
         return chat;
     }
     public VBox getUserProfile() {
-        if(userProfile == null){
             try {
                 userProfile = new FXMLLoader(HelloApplication.class.getResource("UserProfile.fxml")).load();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+
         return userProfile;
     }
     public void init(){

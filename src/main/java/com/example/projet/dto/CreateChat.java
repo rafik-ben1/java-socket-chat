@@ -14,7 +14,7 @@ public class CreateChat extends Message {
 
 
 
-    private List<User> participants;
+    private int participant;
 
 
     public String getChatName() {
@@ -26,19 +26,20 @@ public class CreateChat extends Message {
     }
 
 
-    public void setParticipant(List<User> participants) {
-        this.participants = participants;
+    public void setParticipant(int participant) {
+        this.participant = participant;
     }
 
     public void setChatType(ChatType chatType) {
         this.chatType = chatType;
     }
 
-    public List<User> getParticipants() {
-        return participants;
+    public int getParticipant() {
+        return participant;
     }
 
     private ChatType chatType;
+
 
     public ChatType getChatType() {
         return chatType;

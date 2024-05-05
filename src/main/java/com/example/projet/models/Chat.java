@@ -17,8 +17,8 @@ public class Chat implements Serializable {
     public Chat(int chatId){
 
         this.chatId = chatId;
-        participants = new ArrayList<>();
         messages = new ArrayList<>();
+        participants = new ArrayList<>();
     }
     private List<ChatMessage> messages;
 
@@ -66,6 +66,7 @@ public class Chat implements Serializable {
     public String getChatName() {
         return chatName;
     }
+    public ChatType getChatType(){return type;}
 
     @Override
     public String toString() {

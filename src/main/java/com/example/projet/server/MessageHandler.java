@@ -1,11 +1,13 @@
 package com.example.projet.server;
 
+import com.example.projet.dto.AddToGroupChat;
 import com.example.projet.dto.CreateChat;
 import com.example.projet.dto.CreateUser;
 import com.example.projet.dto.SearchUser;
 import com.example.projet.models.Chat;
 import com.example.projet.models.ChatMessage;
 import com.example.projet.models.User;
+import com.example.projet.models.enums.ChatType;
 import com.example.projet.socketclient.Client;
 
 import java.util.ArrayList;
@@ -74,7 +76,12 @@ public class MessageHandler {
         newChat.setChatName(createChat.getChatName());
         newChat.setType(createChat.getChatType());
         increamentNextChatId();
-        newChat.setParticipants(createChat.getParticipants());
+         User creator =  clients.stream().filter(c -> c.getUser().getUserId() == createChat.getClientId() ).toList().get(0).getUser();
+         newChat.getParticipants().add(creator);
+         if (createChat.getChatType() == ChatType.PRIVATE){
+             User added =  clients.stream().filter(c -> c.getUser().getUserId() == createChat.getParticipant() ).toList().get(0).getUser();
+              newChat.getParticipants().add(added);
+         }
         chats.add(newChat);
         // Send the chat only to the participants
         broadCastChat(newChat,newChat);
@@ -87,6 +94,19 @@ public class MessageHandler {
         chat.addMessage(chatMessage);
          System.out.println("sending " +chatMessage);
         broadCastChat(chat,chatMessage);
+    }
+
+    public void addToChat(AddToGroupChat addToGroupChat){
+         Chat chat =  chats.stream()
+                .filter(c -> c.getChatId() == addToGroupChat.getChatId())
+                .toList().get(0);
+         MessagingSession added = clients.stream()
+                 .filter(c -> c.getUser().getUserId() == addToGroupChat.getAddedUserId())
+                 .toList().get(0);
+         List<User> participants = chat.getParticipants();
+         participants.add(added.getUser());
+        broadCastChat(chat,chat);
+
     }
 
       public void broadCastChat(Chat chat, Object send){
