@@ -4,13 +4,19 @@ import com.example.projet.Model;
 import com.example.projet.models.Chat;
 import com.example.projet.models.ChatMessage;
 import com.example.projet.models.User;
+import com.example.projet.models.enums.ChatMessageType;
 import com.example.projet.socketclient.Client;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+
+import java.io.ByteArrayInputStream;
+import java.util.Base64;
 
 public class MessageListCell extends ListCell<ChatMessage> {
     private final Label avatarLabel;
@@ -42,21 +48,18 @@ public class MessageListCell extends ListCell<ChatMessage> {
                 contentLabel.setStyle( "-fx-text-fill: black;");
 
             }else {
-                avatarLabel.setDisable(true);
-                avatarLabel.setStyle("-fx-background-color:#229ED1 ;"+
-                        "-fx-background-radius: 50%; " +
-                        "-fx-text-fill: #229ED1;"+
-                        "-fx-font-weight: bold;"
-                );
-                avatarLabel.setMaxWidth(1);
                 contentLabel.setStyle( "-fx-text-fill: #f6f6f6;");
+                avatarLabel.setDisable(true);
+
             }
             avatarLabel.setPrefHeight(35);
             avatarLabel.setPrefWidth(35);
+            avatarLabel.setMinHeight(35);
+            avatarLabel.setMinWidth(35);
             avatarLabel.setAlignment(Pos.CENTER);
             contentLabel.setAlignment(Pos.CENTER);
             contentLabel.setWrapText(true);
-            HBox hbox = new HBox(avatarLabel, contentLabel);
+            HBox hbox = new HBox();
 
 
 
@@ -70,9 +73,25 @@ public class MessageListCell extends ListCell<ChatMessage> {
                 hbox.setStyle("-fx-background-color: #229ED1;" +"-fx-background-radius:15px;");
                 hbox.setTranslateX(100);
             }
-            hbox.setMaxWidth(300);
-            hbox.setPadding(new Insets(1));
 
+            hbox.setMaxWidth(310);
+            hbox.setPadding(new Insets(1));
+            hbox.getChildren().addAll(avatarLabel,contentLabel);
+            if(message.getMessageType() == ChatMessageType.IMAGE){
+                byte[] imageBytes = Base64.getDecoder().decode(message.getContent());
+                ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
+                Image image = new Image(bis);
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(300);
+                imageView.setPreserveRatio(true);
+                hbox.getChildren().clear();
+                if (message.getClientId() != Client.getInstance().getUser().getUserId()){
+                    hbox.getChildren().add(avatarLabel);
+                }
+                hbox.getChildren().add(imageView);
+                hbox.setStyle("-fx-background-color: white;");
+                hbox.setSpacing(15);
+            }
             setGraphic(hbox);
         }
     }

@@ -22,7 +22,7 @@ public class ViewFactory {
     private VBox MyChats;
     private Stage stage;
 
-    private VBox chat;
+    private AnchorPane chat;
     private VBox search;
     private VBox userProfile;
 
@@ -79,7 +79,7 @@ public class ViewFactory {
         }
         return search;
     }
-    public VBox getChat() {
+    public AnchorPane getChat() {
 
             try {
                 chat = new FXMLLoader(HelloApplication.class.getResource("Chat.fxml")).load();

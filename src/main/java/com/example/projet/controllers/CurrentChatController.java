@@ -1,10 +1,11 @@
 package com.example.projet.controllers;
 
 import com.example.projet.Model;
+
 import com.example.projet.models.*;
+import com.example.projet.models.enums.ChatMessageType;
 import com.example.projet.models.enums.MessagesType;
 import com.example.projet.socketclient.Client;
-import com.example.projet.views.ChatListCell;
 import com.example.projet.views.MessageListCell;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -15,10 +16,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 import javafx.util.Callback;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.util.Base64;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -45,6 +51,7 @@ public class CurrentChatController implements Initializable, MessageListener {
         Client.getInstance().addChatsListener(this);
         messages = FXCollections.observableArrayList(Model.getInstance().selectedChatProperty().get().getMessages());
         messageListView.setItems(messages);
+        messageListView.setStyle("-fx-selection-bar: white;");
         messageListView.setCellFactory(new Callback<ListView<ChatMessage>, ListCell<ChatMessage>>() {
             @Override
             public ListCell<ChatMessage> call(ListView<ChatMessage> messageListView) {
@@ -62,7 +69,25 @@ public class CurrentChatController implements Initializable, MessageListener {
             });
         });
     }
+     @FXML
+     public void triggerFileSelect(MouseEvent event){
+         FileChooser fileChooser = new FileChooser();
+         fileChooser.setTitle("Select an image to send");
+          File chosen =fileChooser.showOpenDialog(Model.getInstance().getViewFactory().getStage());
+           if (chosen != null){
+               try {
+               byte[] imageContent = Files.readAllBytes(chosen.toPath());
 
+                   String base64Image = Base64.getEncoder().encodeToString(imageContent);
+                   ChatMessage imageMessage = new ChatMessage(Model.getInstance().selectedChatProperty().get().getChatId(),
+                           base64Image,Client.getInstance().getUser().getUserId());
+                   imageMessage.setMessageType(ChatMessageType.IMAGE);
+                   Client.getInstance().sendMessage(imageMessage);
+               } catch (IOException e) {
+                   e.printStackTrace();
+               }
+           }
+    }
     @Override
     public void listen(List<Chat> chatList) {
         Platform.runLater(() -> {
@@ -74,6 +99,7 @@ public class CurrentChatController implements Initializable, MessageListener {
                 if (curr != null) {
                     List<ChatMessage> currMessages = curr.getMessages();
                     messages.setAll(currMessages);
+                    messageListView.scrollTo(messages.size()-1);
                 }
 
         });

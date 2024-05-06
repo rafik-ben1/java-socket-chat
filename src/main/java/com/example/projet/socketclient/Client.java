@@ -105,9 +105,12 @@ public class Client implements Runnable {
 
 
                     if (!optionalChat.isEmpty()){
-                        chatList.remove(optionalChat.get());
+                        optionalChat.get().getParticipants().clear();
+                        optionalChat.get().getParticipants().addAll(chat.getParticipants());
                     }
+                       else {
                         chatList.addFirst(chat);
+                    }
                         myChatsProperty.set(chatList);
                     Platform.runLater(() -> {
                             controllers.forEach(controller -> {

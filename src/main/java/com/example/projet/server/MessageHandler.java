@@ -7,10 +7,19 @@ import com.example.projet.dto.SearchUser;
 import com.example.projet.models.Chat;
 import com.example.projet.models.ChatMessage;
 import com.example.projet.models.User;
+import com.example.projet.models.enums.ChatMessageType;
 import com.example.projet.models.enums.ChatType;
 import com.example.projet.socketclient.Client;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 
