@@ -8,6 +8,7 @@ import com.example.projet.models.enums.ChatMessageType;
 import com.example.projet.socketclient.Client;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -15,6 +16,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
+import javax.print.attribute.standard.Media;
+import javax.sound.sampled.*;
 import java.io.ByteArrayInputStream;
 import java.util.Base64;
 
@@ -77,6 +80,41 @@ public class MessageListCell extends ListCell<ChatMessage> {
             hbox.setMaxWidth(310);
             hbox.setPadding(new Insets(1));
             hbox.getChildren().addAll(avatarLabel,contentLabel);
+            if (message.getMessageType() == ChatMessageType.AUDIO) {
+                Button button = new Button("Play audio");
+                button.setOnAction(e -> {
+                    byte[] audioBytes = Base64.getDecoder().decode(message.getContent());
+                    try (ByteArrayInputStream bis = new ByteArrayInputStream(audioBytes)) {
+                        // Create an audio input stream from the byte array
+                        AudioFormat format = new AudioFormat(44100, 16, 1, true, false);
+                        AudioInputStream audioInputStream = new AudioInputStream(bis, format, audioBytes.length / format.getFrameSize());
+
+                        // Get the format of the audio input stream
+                        DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+                        SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
+                        line.open(format);
+                        line.start();
+
+                        // Create a buffer to read from the audio input stream
+                        byte[] buffer = new byte[4096];
+                        int bytesRead;
+
+                        // Read from the audio input stream and write to the line
+                        while ((bytesRead = audioInputStream.read(buffer)) != -1) {
+                            line.write(buffer, 0, bytesRead);
+                        }
+
+                        // Close the line when done
+                        line.drain();
+                        line.close();
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
+
+                });
+                hbox.getChildren().clear();
+                hbox.getChildren().addAll(avatarLabel, button);
+            }
             if(message.getMessageType() == ChatMessageType.IMAGE){
                 byte[] imageBytes = Base64.getDecoder().decode(message.getContent());
                 ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);

@@ -15,7 +15,7 @@
             <Image url="@../../../gallery.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="331.0" layoutY="460.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="audioHandler" fitHeight="47.0" fitWidth="40.0" layoutX="331.0" layoutY="460.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../rcrd.png" />
          </image>
