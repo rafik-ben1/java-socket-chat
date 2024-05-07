@@ -82,6 +82,8 @@ public class MessageListCell extends ListCell<ChatMessage> {
             hbox.getChildren().addAll(avatarLabel,contentLabel);
             if (message.getMessageType() == ChatMessageType.AUDIO) {
                 Button button = new Button("Play audio");
+                button.setMinWidth(100);
+                button.setStyle("-fx-background-radius:15px;");
                 button.setOnAction(e -> {
                     byte[] audioBytes = Base64.getDecoder().decode(message.getContent());
                     try (ByteArrayInputStream bis = new ByteArrayInputStream(audioBytes)) {
